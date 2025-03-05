@@ -1,14 +1,16 @@
-const tabtitle = document.querySelector("title");
-tabtitle.style.textTransform = "uppercase";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css'; // Importing global styles
+import App from './App'; // Importing the main App component
+import reportWebVitals from './reportWebVitals'; // For measuring performance (optional)
 
-const popetitle = document.createElement("div");
-popetitle.textContext = "popeye";
-popetitle.style.fontSize = "2.6vmin";
-popetitle.style.color = "#bbddceff";
-popetitle.style.height = "8vmin";
-popetitle.style.textAlign = "right";
-popetitle.style.letterSpacing = "0.8vmin";
-popetitle.style.textTransform = "uppercase";
-body.appendChild(popetitle);
+ReactDOM.render(
+  <React.StrictMode>
+    <App /> {/* Rendering the App component */}
+  </React.StrictMode>,
+  document.getElementById('root') // Attaching the React app to the 'root' div in index.html
+);
 
-body.style.backgroundColor = "#26119287";
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+reportWebVitals();
