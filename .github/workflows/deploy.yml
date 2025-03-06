@@ -1,53 +1,42 @@
-name: Deploy React app to GitHub Pages
+name: Deploy Django to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Deploy when changes are pushed to the 'main' branch
+      - main  # Change if using a different branch
     paths-ignore:
       - 'gh-pages/**'
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout the repository
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set Up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'  # Match your node version
+          python-version: '3.12'
 
-      # Cache node_modules to speed up build
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      # Install dependencies
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
-          npm install -g npm@10.9.0
-          npm install -g serve
-          npm install
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      # Build the React app
-      - name: Build React app
-        run: npm run build
-
-      - name: Set Git configuration
+      - name: Build Static Files
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
-          git config --global user.name "popeyeight"
-          git config --global user.email "popeyeight@gmail.com"  # Replace with your email
+          python manage.py collectstatic --noinput
+          mv staticfiles public  # Move to public folder for GitHub Pages
 
       # Ensure these Git configurations are correct for automated commits
       - name: Deploy to GitHub Pages
-        run: npx gh-pages -d build -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/popeyeight/popeyeight.github.io.git
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: public  # Static files directory
         env:
           github_token: ${{ secrets.GITHUB_TOKEN }}
