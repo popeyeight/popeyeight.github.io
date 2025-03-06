@@ -1,0 +1,20 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Dashboard - Secure Chat{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ request.user.username }}!</h2>
+<p>This is your secure dashboard.</p>
+
+<a href="{% url 'chat' %}" style="display: inline-block; margin-top: 20px; padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+    Enter Chat Room
+</a>
+
+<form action="{% url 'logout' %}" method="post" style="margin-top: 20px;">
+    {% csrf_token %}
+    <button type="submit" style="background: red; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">
+        Logout
+    </button>
+</form>
+{% endblock %}
+

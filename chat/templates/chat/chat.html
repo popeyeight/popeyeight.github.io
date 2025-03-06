@@ -1,0 +1,30 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Chat Room{% endblock %}
+
+{% block content %}
+<h2>Welcome to Secure Chat</h2>
+<div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px;"></div>
+<input type="text" id="message-input" placeholder="Type a message...">
+<button id="send-btn">Send</button>
+
+<script>
+    const username = "{{ request.user.username }}";
+    const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/");
+
+    chatSocket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        const chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML += `<p><b>${data.username}:</b> ${data.message}</p>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    document.getElementById("send-btn").onclick = function() {
+        const messageInput = document.getElementById("message-input");
+        const message = messageInput.value;
+        chatSocket.send(JSON.stringify({ message: message, username: username }));
+        messageInput.value = "";
+    };
+</script>
+{% endblock %}
+
