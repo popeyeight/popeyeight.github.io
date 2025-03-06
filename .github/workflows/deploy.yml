@@ -37,7 +37,7 @@ jobs:
         run: |
           git config --global user.name "nprtvx"
           git config --global user.email "neonmonkey08@gmail.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/nprtvx/nprtvx.github.io.git
+          git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/nprtvx/nprtvx.github.io.git
           git checkout --orphan gh-pages
           git add -A
           git commit -m "Deploy static files"
