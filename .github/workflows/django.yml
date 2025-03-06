@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Change if using a different branch
+      paths-ignore:
+      - 'gh-pages/**'
 
 jobs:
   build:
