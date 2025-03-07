@@ -33,8 +33,10 @@ jobs:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
           python manage.py collectstatic --noinput
+          echo "Contents of staticfiles directory:"
           ls -la staticfiles  # List contents of staticfiles directory for debugging
           mv staticfiles public  # Move to public folder for GitHub Pages
+          echo "Contents of public directory:"
           ls -la public  # List contents of public directory for debugging
 
       - name: Deploy to GitHub Pages
