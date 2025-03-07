@@ -1,5 +1,8 @@
 name: Deploy Django to GitHub Pages
 
+permissions:
+  contents: write  # Grants write permission to the contents
+
 on:
   push:
     branches:
@@ -31,12 +34,6 @@ jobs:
         run: |
           python manage.py collectstatic --noinput
           mv staticfiles public  # Move to public folder for GitHub Pages
-
-      - name: Debug Info
-        run: |
-          echo "Token: ${{ secrets.DJANGO_TOKEN }}"
-          echo "Branch: gh-pages"
-          echo "Folder: public"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
