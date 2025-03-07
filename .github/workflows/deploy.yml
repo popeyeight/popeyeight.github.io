@@ -38,16 +38,21 @@ jobs:
       - name: List contents of public directory
         run: ls -la public
 
+      - name: Stash local changes
+        run: |
+          git stash --include-untracked
+
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.DJANGO_TOKEN }}
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/${{ github.repository }}.git
           git fetch origin gh-pages
           git checkout gh-pages || git checkout --orphan gh-pages
           git reset --hard origin/gh-pages
+          git stash pop || true  # Apply the stashed changes if any, ignore errors if no stash is present
           cp -r public/* .  # Adjust this line to match your build output directory
           git add .
           git commit -m "Deploy to GitHub Pages"
