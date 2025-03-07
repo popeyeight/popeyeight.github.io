@@ -33,15 +33,15 @@ jobs:
           mv staticfiles public  # Move to public folder for GitHub Pages
 
       # Ensure these Git configurations are correct for automated commits
-      - name: Git Commit
-        run: |
-          git config --global user.name "nprtvx"
-          git config --global user.email "neonmonkey08@gmail.com"
-          git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/nprtvx/nprtvx.github.io.git
-          git checkout --orphan gh-pages
-          git add -A
-          git commit -m "Deploy static files"
-          git push -f origin gh-pages
+      # - name: Git Commit
+      #   run: |
+      #     git config --global user.name "nprtvx"
+      #     git config --global user.email "neonmonkey08@gmail.com"
+      #     git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/nprtvx/nprtvx.github.io.git
+      #     git checkout --orphan gh-pages
+      #     git add -A
+      #     git commit -m "Deploy static files"
+      #     git push -f origin gh-pages
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
