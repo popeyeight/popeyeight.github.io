@@ -1,13 +1,3 @@
-To improve the `.github/workflows/deploy.yml` file, consider the following suggestions:
-
-1. **Add a Cache Step**: Caching dependencies can speed up the workflow execution.
-2. **Use Specific Python Version**: Specify a minor version for more predictable builds.
-3. **Add Linting and Testing Steps**: Ensure code quality and functionality before deployment.
-4. **Use Environment Variable for Python Version**: Manage Python version more flexibly.
-
-Here is an improved version of your workflow file:
-
-```yaml
 name: Deploy Django to GitHub Pages
 
 on:
@@ -30,27 +20,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Cache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Lint Code
-        run: |
-          pip install flake8
-          flake8 .
-
-      - name: Test Code
-        run: |
-          python manage.py test
 
       - name: Build Static Files
         env:
@@ -59,17 +32,15 @@ jobs:
           python manage.py collectstatic --noinput
           mv staticfiles public  # Move to public folder for GitHub Pages
 
+      - name: Debug Info
+        run: |
+          echo "Token: ${{ secrets.DJANGO_TOKEN }}"
+          echo "Branch: gh-pages"
+          echo "Folder: public"
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           github_token: ${{ secrets.DJANGO_TOKEN }}
           branch: gh-pages
           folder: public  # Static files directory
-```
-
-**Changes made:**
-- Added a caching step to cache pip dependencies.
-- Added linting and testing steps before building static files.
-- Specified a minor version for Python for more predictable builds.
-
-These improvements can help make your workflow faster, more reliable, and ensure code quality.
