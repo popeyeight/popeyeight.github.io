@@ -45,7 +45,6 @@ jobs:
           if [ -z "$(ls -A public)" ]; then
             echo "Error: public directory is empty"
             exit 1
-          fi
 
       - name: Stash local changes
         run: |
@@ -53,7 +52,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         env:
-          GITHUB_TOKEN: ${{ secrets.DJANGO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.DJANGO_TOKEN }}  # Ensure the token is correctly referenced
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
