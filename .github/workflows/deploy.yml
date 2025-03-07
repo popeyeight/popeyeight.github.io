@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'  # Specify the Python version you need
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
@@ -33,10 +33,19 @@ jobs:
         run: ls -la staticfiles
 
       - name: Move static files to public directory
-        run: mv staticfiles public
+        run: |
+          mkdir -p public
+          mv staticfiles/* public/
 
       - name: List contents of public directory
         run: ls -la public
+
+      - name: Verify public directory is not empty
+        run: |
+          if [ -z "$(ls -A public)" ]; then
+            echo "Error: public directory is empty"
+            exit 1
+          fi
 
       - name: Stash local changes
         run: |
