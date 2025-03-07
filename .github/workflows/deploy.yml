@@ -1,5 +1,7 @@
 name: Deploy to GitHub Pages
 
+permissions: write
+
 on:
   push:
     branches:
@@ -11,12 +13,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'  # Specify the Python version you need
+          python-version: '3.12'  # Specify the Python version you need
 
       - name: Install dependencies
         run: |
@@ -39,6 +41,8 @@ jobs:
         run: ls -la public
 
       - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.DJANGO_TOKEN }}
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -50,5 +54,3 @@ jobs:
           git add .
           git commit -m "Deploy to GitHub Pages"
           git push origin gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
