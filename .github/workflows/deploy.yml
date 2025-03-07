@@ -3,66 +3,33 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this to your default branch if it's not `main`
+      - main  # Set to the branch you want to deploy
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Adjust this if your dependencies file has a different name
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Ensure static directory exists
-        run: mkdir -p static
+    - name: Build the project
+      run: |
+        # Add your build commands here
+        echo "Building the project..."
 
-      - name: Collect static files
-        run: python manage.py collectstatic --noinput
-
-      - name: List contents of staticfiles directory
-        run: ls -la staticfiles
-
-      - name: Move static files to public directory
-        run: |
-          mkdir -p public
-          mv staticfiles/* public/
-
-      - name: List contents of public directory
-        run: ls -la public
-
-      - name: Verify public directory is not empty
-        run: |
-          if [ -z "$(ls -A public)" ]; then
-            echo "Error: public directory is empty"
-            exit 1
-          fi
-
-      - name: Stash local changes
-        run: |
-          git stash --include-untracked
-
-      - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.DJANGO_TOKEN }}  # Ensure the token is correctly referenced
-        run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/${{ github.repository }}.git
-          git fetch origin gh-pages
-          git checkout gh-pages || git checkout --orphan gh-pages
-          git reset --hard origin/gh-pages
-          git stash pop || true  # Apply the stashed changes if any, ignore errors if no stash is present
-          cp -r public/* .  # Adjust this line to match your build output directory
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-          git push origin gh-pages
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.DJANGO_TOKEN }}
+        publish_dir: ./public  # Set to the directory you want to publish
