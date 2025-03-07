@@ -1,47 +1,39 @@
-name: Deploy Django to GitHub Pages
-
-permissions:
-  contents: write  # Grants write permission to the contents
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Change if using a different branch
-    paths-ignore:
-      - 'gh-pages/**'
+      - main  # Change this to your default branch if it's not `main`
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set Up Python
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.x'  # Specify the Python version you need
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt  # Adjust this if your dependencies file has a different name
 
-      - name: Build Static Files
-        env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      - name: Build static files
         run: |
-          python manage.py collectstatic --noinput
-          echo "Contents of staticfiles directory:"
-          ls -la staticfiles  # List contents of staticfiles directory for debugging
-          mv staticfiles public  # Move to public folder for GitHub Pages
-          echo "Contents of public directory:"
-          ls -la public  # List contents of public directory for debugging
+          # Add your build commands here
+          python build_script.py  # Replace with your actual build command
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          github_token: ${{ secrets.DJANGO_TOKEN }}
-          branch: gh-pages
-          folder: public  # Static files directory
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy to GitHub Pages"
+          git push origin gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
