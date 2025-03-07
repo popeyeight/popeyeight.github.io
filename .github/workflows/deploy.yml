@@ -34,16 +34,16 @@ jobs:
 
       # Ensure these Git configurations are correct for automated commits
       - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.name "Githu Actions"
-          git config --global user.email "actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/nprtvx/nprtvx.github.io.git
-          git checkout --orphan gh-pages
-          git add -A
-          git commit -m "Deploy static files"
-          git push -f origin gh-pages
-        #uses: JamesIves/github-pages-deploy-action@v4
-        #with:
-          #github_token: ${{ secrets.GITHUB_TOKEN }}
-          #branch: gh-pages
-          #folder: public  # Static files directory
+        #run: |
+          #git config --global user.name "Githu Actions"
+          #git config --global user.email "actions@github.com"
+          #git remote set-url origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}@github.com/nprtvx/nprtvx.github.io.git
+          #git checkout --orphan gh-pages
+          #git add -A
+          #git commit -m "Deploy static files"
+          #git push -f origin gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          github_token: ${{ secrets.DJANGO_TOKEN }}
+          branch: gh-pages
+          folder: public  # Static files directory
