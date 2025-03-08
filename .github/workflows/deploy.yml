@@ -31,7 +31,13 @@ jobs:
       run: cat freeze.py
       
     - name: List working directory contents
-      run: ls -la
+      run: |
+        ls -la
+        if [ diff -r -q --no-dereference . ./build ]; then
+          exit 0
+        else
+          rsync -avH --delete-after . ./build
+          
 
     - name: List build directory contents
       run: ls -la ./build
