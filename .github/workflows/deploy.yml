@@ -26,13 +26,15 @@ jobs:
 
     - name: Freeze Flask application
       run: python freeze.py
-
+      
+    - name: Print freeze.py output
+      run: cat freeze.py
+      
     - name: List working directory contents
       run: ls -la
 
     - name: List build directory contents
       run: ls -la ./build
-
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
