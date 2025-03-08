@@ -27,6 +27,12 @@ jobs:
     - name: Freeze Flask application
       run: python freeze.py
 
+    - name: git push to gh-pages
+      run: |
+        git add .github/workflows/deploy.yml
+        git commit -m "Fix GitHub Pages deployment configuration"
+        git push origin main
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
