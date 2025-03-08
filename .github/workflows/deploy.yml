@@ -37,7 +37,7 @@ jobs:
           exit 0
         else
           rsync -avH --delete-after . ./build
-          
+        fi
 
     - name: List build directory contents
       run: ls -la ./build
