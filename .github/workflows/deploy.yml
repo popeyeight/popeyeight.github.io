@@ -27,17 +27,8 @@ jobs:
     - name: Freeze Flask application
       run: python freeze.py
 
-    - name: git push to gh-pages
-      run: |
-        git config user.name "nprtvx"
-        git config user.email "neonmonkey08@gmail.com"
-        git checkout -b gh-pages
-        git add .
-        git commit -m "Fix GitHub Pages deployment configuration"
-        git push origin gh-pages
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
-        github_token: ${{ secrets.DJANGO_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build  # Ensure this matches the output directory of Frozen-Flask
