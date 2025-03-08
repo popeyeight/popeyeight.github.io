@@ -32,7 +32,7 @@ jobs:
         git config user.name "nprtvx"
         git config user.email "neonmonkey08@gmail.com"
         git checkout -b gh-pages
-        git add .github/workflows/deploy.yml
+        git add .
         git commit -m "Fix GitHub Pages deployment configuration"
         git push origin gh-pages
 
