@@ -31,7 +31,7 @@ jobs:
       run: |
         git config user.name "nprtvx"
         git config user.email "neonmonkey08@gmail.com"
-        git remote add origin https://x-access-token:${{ DJANGO_TOKEN }}git@github.com/nprtvx/nprtvx.github.io.git
+        git remote add origin https://x-access-token:${{ secrets.DJANGO_TOKEN }}git@github.com/nprtvx/nprtvx.github.io.git
         git checkout -b gh-pages
         git add .github/workflows/deploy.yml
         git commit -m "Fix GitHub Pages deployment configuration"
