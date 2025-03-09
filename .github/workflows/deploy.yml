@@ -26,14 +26,14 @@ jobs:
 
     - name: Freeze Flask application
       run: python freeze.py
-      
+
     - name: Print freeze.py output
       run: cat freeze.py
-      
+
     - name: List working directory contents
       run: |
         ls -la
-        if [ diff -r -q --no-dereference . ./build ]; then
+        if diff -r --no-dereference . ./build; then
           exit 0
         else
           rsync -avH --delete-after . ./build
