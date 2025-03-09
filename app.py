@@ -870,4 +870,4 @@ textarea:focus {
 .unread-badge {
     background-color: #4a6fa5;
     color: white;
-    border
+}''')
