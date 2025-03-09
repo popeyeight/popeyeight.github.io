@@ -1,2 +1,5 @@
 flask
 Frozen-Flask
+flask-sqlalchemy
+flask-login
+flask-wtf
